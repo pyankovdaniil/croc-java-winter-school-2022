@@ -1,2 +1,5 @@
-package ru.croc.task3.util;public class Shape {
+package ru.croc.task3.util;
+
+abstract public class Shape {
+    public abstract double getArea();
 }
