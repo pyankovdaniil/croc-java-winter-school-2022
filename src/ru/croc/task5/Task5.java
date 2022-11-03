@@ -9,7 +9,7 @@ import ru.croc.task5.figures.Rectangle;
 
 import java.util.Optional;
 
-public class Test {
+public class Task5 {
     public static void main(String[] args) {
         Figure circle = new Circle(new Point(15, 15), 10);
         Figure rectangle = new Rectangle(new Point(25, 25), new Point(150, 150));

@@ -7,7 +7,7 @@ import ru.croc.task4.figures.Figure;
 import ru.croc.task4.figures.Point;
 import ru.croc.task4.figures.Rectangle;
 
-public class Test {
+public class Task4 {
     public static void main(String[] args) {
         Figure circle1 = new Circle(new Point(10, 1000), 100);
         Figure circle2 = new Circle(new Point(15, 15), 10);
