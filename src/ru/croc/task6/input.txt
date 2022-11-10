@@ -1,0 +1,40 @@
+package ru.croc.task6;
+
+/*
+ * Hello there !!!
+ * My first ever program in Java!
+ */
+public class Hello { // class body starts here
+
+    /* main method */
+    public static void main(String[] args/* we put command line arguments here*/) {
+        // this line prints my first greeting to the screen
+        System.out.println("Hi!"); // :)
+
+        int/*it is the type*/a/*it is the name*/ = 5;
+        List<Integer>/*it is parametrized type*/list = new ArrayList<>();
+
+        /*it is
+        * the definition
+        * of sting*/
+        String/*string
+        is
+        a
+        class
+
+        */s =/**
+         this will
+         be
+
+         in a
+
+         string
+         pool*/ "some text // it should stay here!";
+    }
+} // the end
+// to be continued...
+/*
+  Hope you liked my program
+ */
+ // bye
+
