@@ -8,11 +8,14 @@ public class Hello {
         
         System.out.println("Hi!"); 
 
+        
         int a = 5;
+
+        
         List<Integer> list = new ArrayList<>();
 
         
-        String s = "some text // it should stay here!";
+        Strings = "some text!";
     }
 } 
 
