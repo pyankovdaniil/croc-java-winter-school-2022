@@ -40,4 +40,26 @@ public class HashCodeGenerator {
 
         return getHashCodeOfMd5HashOfBytesArray(bytes);
     }
+
+    private String toHexString(byte[] bytes) {
+        StringBuilder hex = new StringBuilder(bytes.length * 2);
+        for (byte b : bytes) {
+            hex.append(HEX_DIGITS[(b & 0xff) >> 4]);
+            hex.append(HEX_DIGITS[b & 0x0f]);
+        }
+        return hex.toString();
+    }
+
+    public String getMd5Hash(String password) {
+        MessageDigest digest;
+        try {
+            digest = MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+        digest.update(password.getBytes());
+        byte[] bytes = digest.digest();
+        return toHexString(bytes);
+    }
+
 }

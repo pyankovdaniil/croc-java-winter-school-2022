@@ -1,5 +1,7 @@
 package ru.croc.task9;
 
+import ru.croc.task9.util.HashCodeGenerator;
+import ru.croc.task9.util.PasswordConverter;
 import ru.croc.task9.util.PasswordFinder;
 
 import java.util.concurrent.ExecutionException;
@@ -9,8 +11,8 @@ public class Task9 {
         int numberOfThreads = Integer.parseInt(args[0]);
         String passwordHash = args[1];
 
+        // abababa, B34A35CED46287CEE03A93C99D03006C
         PasswordFinder finder = new PasswordFinder(numberOfThreads, passwordHash);
-        // answer is : passwrd
-        System.out.println(finder.findPassword());
+        System.out.println("Found the password: " + finder.findPassword());
     }
 }

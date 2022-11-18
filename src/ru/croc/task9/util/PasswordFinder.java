@@ -33,7 +33,6 @@ public class PasswordFinder {
                 for (long j = begin; j < end; j++) {
                     if (generator.getHashCodeOfPasswordNumber(j) == hashCodeToFind) {
                         password = PasswordConverter.getPasswordFromNumber(j);
-                        System.out.println(password);
                         break;
                     }
                 }
@@ -42,16 +41,16 @@ public class PasswordFinder {
         }
         threadPool.shutdown();
 
-        for (int i = 0; i < numberOfThreads; i++) {
-            if (futureList.get(i).isDone()) {
-                String password = futureList.get(i).get();
-                if (password != null) {
-                    System.out.println("Found password: " + password);
-                    return password;
+        while (true) {
+            for (int i = 0; i < numberOfThreads; i++) {
+                if (futureList.get(i).isDone()) {
+                    String password = futureList.get(i).get();
+                    if (password != null) {
+                        System.out.println("Found password: " + password);
+                        return password;
+                    }
                 }
             }
         }
-
-        return null;
     }
 }
