@@ -21,13 +21,15 @@ public class AuctionLot {
             return;
         }
         lock.lock();
-        if (newPrice.compareTo(currentPrice) < 0) {
+        try {
+            if (newPrice.compareTo(currentPrice) < 0) {
+                return;
+            }
+            currentPrice = newPrice;
+            this.winnerName = userName;
+        } finally {
             lock.unlock();
-            return;
         }
-        currentPrice = newPrice;
-        this.winnerName = userName;
-        lock.unlock();
     }
 
     public String getWinnerName() {

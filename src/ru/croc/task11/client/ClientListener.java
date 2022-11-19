@@ -2,11 +2,11 @@ package ru.croc.task11.client;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ClientListener implements Runnable {
-    public static List<ClientListener> clientListeners = new ArrayList<>();
+    public static List<ClientListener> clientListeners = new CopyOnWriteArrayList<>();
     private Socket socket;
     private BufferedReader reader;
     private BufferedWriter writer;

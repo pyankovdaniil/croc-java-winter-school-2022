@@ -4,13 +4,13 @@ import ru.croc.task10.util.AuctionLot;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Scanner;
 
 public class Task10 {
     public static void main(String[] args) throws InterruptedException {
         AuctionLot lot = new AuctionLot(BigDecimal.valueOf(100),
-                LocalDateTime.of(2022, 11, 18, 23, 59,
-                        59, (int) Math.pow(1, 9) - 1));
+                LocalDateTime.now().plus(1, ChronoUnit.MINUTES));
 
         System.out.println(lot);
 

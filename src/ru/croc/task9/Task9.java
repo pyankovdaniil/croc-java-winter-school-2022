@@ -1,7 +1,5 @@
 package ru.croc.task9;
 
-import ru.croc.task9.util.HashCodeGenerator;
-import ru.croc.task9.util.PasswordConverter;
 import ru.croc.task9.util.PasswordFinder;
 
 import java.util.concurrent.ExecutionException;
