@@ -6,6 +6,7 @@ import java.util.Arrays;
 
 public class HashCodeGenerator {
     private static final char[] HEX_DIGITS = "0123456789ABCDEF".toCharArray();
+    private static final int RADIX = 26;
     private byte[] bytes = new byte[7];
     private byte[] md5HashBytes = new byte[32];
 
@@ -34,8 +35,8 @@ public class HashCodeGenerator {
 
     public int getHashCodeOfPasswordNumber(long passwordNumber) {
         for (int i = 6; i >= 0; i--) {
-            bytes[i] = (byte) ((passwordNumber % 26) + 97);
-            passwordNumber /= 26;
+            bytes[i] = (byte) ((passwordNumber % RADIX) + 'a');
+            passwordNumber /= RADIX;
         }
 
         return getHashCodeOfMd5HashOfBytesArray(bytes);

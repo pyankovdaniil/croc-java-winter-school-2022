@@ -1,6 +1,7 @@
 package ru.croc.task10;
 
 import ru.croc.task10.util.AuctionLot;
+import ru.croc.task10.util.BetMaker;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -15,27 +16,15 @@ public class Task10 {
         System.out.println(lot);
 
         Thread firstThread = new Thread(() -> {
-            BigDecimal price = BigDecimal.valueOf(100);
-            while (!Thread.currentThread().isInterrupted()) {
-                lot.acceptBet(price, "Bob");
-                price = price.add(BigDecimal.valueOf(100));
-            }
+            BetMaker.makeBets(lot, "Bob", BigDecimal.valueOf(100), BigDecimal.valueOf(100));
         });
 
         Thread secondThread = new Thread(() -> {
-            BigDecimal price = BigDecimal.valueOf(1000);
-            while (!Thread.currentThread().isInterrupted()) {
-                lot.acceptBet(price, "Rick");
-                price = price.add(BigDecimal.valueOf(200));
-            }
+            BetMaker.makeBets(lot, "Rick", BigDecimal.valueOf(1000), BigDecimal.valueOf(200));
         });
 
         Thread thirdThread = new Thread(() -> {
-            BigDecimal price = BigDecimal.valueOf(1);
-            while (!Thread.currentThread().isInterrupted()) {
-                lot.acceptBet(price, "Kate");
-                price = price.add(BigDecimal.valueOf(1));
-            }
+            BetMaker.makeBets(lot, "Kate", BigDecimal.valueOf(1), BigDecimal.valueOf(1));
         });
 
         firstThread.start();

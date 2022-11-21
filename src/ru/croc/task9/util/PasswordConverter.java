@@ -1,6 +1,7 @@
 package ru.croc.task9.util;
 
 public class PasswordConverter {
+    private static final int RADIX = 26;
     private PasswordConverter() {
     }
 
@@ -8,8 +9,8 @@ public class PasswordConverter {
         char[] chars = new char[7];
 
         for (int i = 6; i >= 0; i--) {
-            chars[i] = (char) ((number % 26) + 97);
-            number /= 26;
+            chars[i] = (char) ((number % RADIX) + 'a');
+            number /= RADIX;
         }
 
         return String.valueOf(chars);
@@ -19,7 +20,7 @@ public class PasswordConverter {
         long result = 0;
         byte[] bytes = password.getBytes();
         for (int i = 0; i < bytes.length; i++) {
-            result += (bytes[i] - 97) * Math.pow(26, 6 - i);
+            result += (bytes[i] - 'a') * Math.pow(RADIX, 6 - i);
         }
         return result;
     }
