@@ -1,0 +1,8 @@
+Short comment!
+Another one
+Very long comment that should be deleted
+Another long comment...
+One more comment with length > 20
+Hello
+Ahahahahah
+Like!
