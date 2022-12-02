@@ -1,4 +1,4 @@
-package ru.croc.task13.util;
+package ru.croc.task13.filmsutil;
 
 public class Film {
     private int filmId;
@@ -29,13 +29,5 @@ public class Film {
 
     public void setFilmName(String filmName) {
         this.filmName = filmName;
-    }
-
-    @Override
-    public String toString() {
-        return "Film{" +
-                "filmId=" + filmId +
-                ", filmName='" + filmName + '\'' +
-                '}';
     }
 }

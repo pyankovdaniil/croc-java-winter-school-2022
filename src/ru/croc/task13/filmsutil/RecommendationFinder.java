@@ -1,4 +1,4 @@
-package ru.croc.task13.util;
+package ru.croc.task13.filmsutil;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -9,14 +9,11 @@ public class RecommendationFinder {
     private RecommendationFinder() {
     }
 
-    public static void getRecommendation(String filmsFileName, String watchHistoryFileName,
-                                         List<Integer> watchedFilms) throws IOException {
-        List<Film> films = FilmServiceReader.readFilmsFromFile(filmsFileName);
-        List<List<Integer>> watchHistory = FilmServiceReader.readWatchHistoryFromFile(watchHistoryFileName);
-
+    public static void getRecommendation(List<Film> films, List<List<Integer>> watchHistory,
+                                         List<Integer> watchedFilms) {
         List<Integer> matchedFilms = new ArrayList<>();
+        int numberOfWatchedFilms = watchedFilms.size();
         for (List<Integer> personWatchList : watchHistory) {
-            int numberOfWatchedFilms = personWatchList.size();
             int numberOfMatchedFilms = 0;
             for (int filmId : personWatchList) {
                 if (watchedFilms.contains(filmId)) {

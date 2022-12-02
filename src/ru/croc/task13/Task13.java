@@ -1,6 +1,8 @@
 package ru.croc.task13;
 
-import ru.croc.task13.util.RecommendationFinder;
+import ru.croc.task13.filmdatareaders.FilmDataFileReader;
+import ru.croc.task13.filmdatareaders.FilmDataReader;
+import ru.croc.task13.filmsutil.RecommendationFinder;
 
 import java.io.IOException;
 import java.util.*;
@@ -15,7 +17,10 @@ public class Task13 {
             watchedFilms.add(Integer.parseInt(filmId));
         }
 
-        RecommendationFinder.getRecommendation("src\\ru\\croc\\task13\\films.txt",
-                "src\\ru\\croc\\task13\\watchHistory.txt", watchedFilms);
+        FilmDataReader filmDataReader = new FilmDataFileReader("src\\ru\\croc\\task13\\films.txt",
+                "src\\ru\\croc\\task13\\watchHistory.txt");
+
+        RecommendationFinder.getRecommendation(filmDataReader.readFilms(),
+                filmDataReader.readWatchHistory(), watchedFilms);
     }
 }

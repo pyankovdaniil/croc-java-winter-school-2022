@@ -1,14 +1,14 @@
-package ru.croc.task13.util;
+package ru.croc.task13.filmdatareaders;
+
+import ru.croc.task13.filmsutil.Film;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FilmServiceReader {
-    private FilmServiceReader() {
-    }
-
-    public static List<Film> readFilmsFromFile(String filmsFileName) throws IOException {
+public record FilmDataFileReader(String filmsFileName, String watchHistoryFileName) implements FilmDataReader {
+    @Override
+    public List<Film> readFilms() throws IOException {
         List<Film> films = new ArrayList<>();
         BufferedReader reader = new BufferedReader(
                 new FileReader(new File(filmsFileName).getAbsolutePath())
@@ -24,10 +24,11 @@ public class FilmServiceReader {
         return films;
     }
 
-    public static List<List<Integer>> readWatchHistoryFromFile(String fileName) throws IOException {
+    @Override
+    public List<List<Integer>> readWatchHistory() throws IOException {
         List<List<Integer>> history = new ArrayList<>();
         BufferedReader reader = new BufferedReader(
-                new FileReader(new File(fileName).getAbsolutePath())
+                new FileReader(new File(watchHistoryFileName).getAbsolutePath())
         );
 
         String line;
