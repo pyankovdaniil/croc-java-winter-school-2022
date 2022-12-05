@@ -1,16 +1,21 @@
 package ru.croc.task15.ageutil;
 
-import ru.croc.task15.comparators.AgeGroupDescendingComparator;
-import ru.croc.task15.comparators.PersonAgeDescNameAscComparator;
 import ru.croc.task15.personutil.Person;
 
 import java.util.*;
 
 public class AgeGroupFilterImplementation implements AgeGroupFilter {
+    public Comparator<AgeGroup> ageGroupComparator = (group1, group2) -> group2.lowerBound() - group1.lowerBound();
+    public Comparator<Person> personComparator = (person1, person2) -> {
+        if (person1.getAge() == person2.getAge()) {
+            return person1.getFullName().compareTo(person2.getFullName());
+        }
+        return person2.getAge() - person1.getAge();
+    };
+
     @Override
     public Map<AgeGroup, List<Person>> filter(Iterable<AgeGroup> groups, Iterable<Person> persons) {
-        Map<AgeGroup, List<Person>> filteredPersons = new TreeMap<>((group1, group2) ->
-                new AgeGroupDescendingComparator().compare(group1, group2));
+        Map<AgeGroup, List<Person>> filteredPersons = new TreeMap<>(ageGroupComparator);
 
         for (Person person : persons) {
             for (AgeGroup group : groups) {
@@ -22,8 +27,7 @@ public class AgeGroupFilterImplementation implements AgeGroupFilter {
         }
 
         for (List<Person> personsInGroup : filteredPersons.values()) {
-            personsInGroup.sort((person1, person2) ->
-                    new PersonAgeDescNameAscComparator().compare(person1, person2));
+            personsInGroup.sort(personComparator);
         }
 
         return filteredPersons;
