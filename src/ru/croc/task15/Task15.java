@@ -18,7 +18,6 @@ public class Task15 {
             currentLowerBound = Integer.parseInt(arg);
         }
         groups.add(new AgeGroup(currentLowerBound + 1, AgeGroup.MAX_AGE + 1));
-        System.out.println(groups);
 
         Scanner scanner = new Scanner(System.in);
         List<Person> personList = new ArrayList<>();
