@@ -20,16 +20,16 @@ public class ShopDatabasePrinter implements DatabasePrinter {
             ResultSet productData = statement.executeQuery("select * from `product`");
             while (productData.next()) {
                 System.out.println("{id=" + productData.getInt("id") + "}: "
-                        + "артикул - " + productData.getString("vendor_code") + ", "
-                        + "название - " + productData.getString("name") + ", "
-                        + "цена - " + productData.getInt("price") + "руб.");
+                        + "vendor code - " + productData.getString("vendor_code") + ", "
+                        + "name - " + productData.getString("name") + ", "
+                        + "price - " + productData.getInt("price") + "rub.");
             }
 
             System.out.println("\n--- Order table ---");
             ResultSet orderData = statement.executeQuery("select * from `order` order by order_number");
             while (orderData.next()) {
-                System.out.println("Заказ #" + orderData.getInt("order_number") + ": пользователь с {id="
-                        + orderData.getInt("user_id") + "} заказал товар с {id="
+                System.out.println("Заказ #" + orderData.getInt("order_number") + ": user with {id="
+                        + orderData.getInt("user_id") + "} ordered product with {id="
                         + orderData.getInt("product_id") + "}");
             }
         } catch (SQLException e) {

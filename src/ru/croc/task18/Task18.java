@@ -90,12 +90,12 @@ public class Task18 {
         OrderDao orderDao = new OrderDaoImplementation(databasePath, databaseUsername, databasePassword);
 
         List<Product> productList = new ArrayList<>();
-        productList.add(new Product(0, "T7", "Холодильник", 40000));
-        productList.add(new Product(0, "T8", "Микроволновка", 7000));
+        productList.add(new Product(0, "T7", "Iphone 14 Pro 256Gb", 40000));
+        productList.add(new Product(0, "T8", "MacBook Pro M1 Max", 7000));
 
         try {
             Order order = orderDao.createOrder("vasya", productList);
-            System.out.println("\n" + order);
+            System.out.println("\n" + order + "\n");
         } catch (NoSuchUserException e) {
             System.out.println(e.getMessage());
         }
