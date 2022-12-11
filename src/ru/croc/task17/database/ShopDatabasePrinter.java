@@ -28,7 +28,7 @@ public class ShopDatabasePrinter implements DatabasePrinter {
             System.out.println("\n--- Order table ---");
             ResultSet orderData = statement.executeQuery("select * from `order` order by order_number");
             while (orderData.next()) {
-                System.out.println("Заказ #" + orderData.getInt("order_number") + ": user with {id="
+                System.out.println("Order #" + orderData.getInt("order_number") + ": user with {id="
                         + orderData.getInt("user_id") + "} ordered product with {id="
                         + orderData.getInt("product_id") + "}");
             }

@@ -76,9 +76,6 @@ public class ShopDatabaseInserter implements DatabaseInserter {
                 orderStatement.setInt(3, productId);
                 orderStatement.execute();
             }
-
-            DatabasePrinter databasePrinter = new ShopDatabasePrinter();
-            databasePrinter.printDatabase(databasePath, databaseUsername, databasePassword);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }

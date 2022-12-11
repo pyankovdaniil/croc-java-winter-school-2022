@@ -1,7 +1,9 @@
 package ru.croc.task17;
 
 import ru.croc.task17.database.DatabaseInserter;
+import ru.croc.task17.database.DatabasePrinter;
 import ru.croc.task17.database.ShopDatabaseInserter;
+import ru.croc.task17.database.ShopDatabasePrinter;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -15,5 +17,9 @@ public class Task17 {
         DatabaseInserter databaseInserter = new ShopDatabaseInserter();
         databaseInserter.insertLines("jdbc:h2:/DatabaseFiles/H2/shop_db",
                 "sa", "", databaseLines);
+
+        DatabasePrinter databasePrinter = new ShopDatabasePrinter();
+        databasePrinter.printDatabase("jdbc:h2:/DatabaseFiles/H2/shop_db",
+                "sa", "");
     }
 }
