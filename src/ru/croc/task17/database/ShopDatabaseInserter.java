@@ -70,7 +70,8 @@ public class ShopDatabaseInserter implements DatabaseInserter {
                 }
 
                 PreparedStatement orderStatement =
-                        connection.prepareStatement("insert into `order` values (?, ?, ?)");
+                        connection.prepareStatement("insert into `order`(order_number, user_id, product_id) " +
+                                "values (?, ?, ?)");
                 orderStatement.setInt(1, orderNumber);
                 orderStatement.setInt(2, userId);
                 orderStatement.setInt(3, productId);

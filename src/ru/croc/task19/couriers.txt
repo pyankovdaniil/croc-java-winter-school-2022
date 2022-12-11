@@ -1,0 +1,2 @@
+Ivanov,Ivan,N1
+Petrov,Petr,N2
