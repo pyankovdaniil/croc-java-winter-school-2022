@@ -11,14 +11,66 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderDaoImplementation implements OrderDao {
-    private String databasePath;
-    private String databaseUsername;
-    private String databasePassword;
+    private final String databasePath;
+    private final String databaseUsername;
+    private final String databasePassword;
 
     public OrderDaoImplementation(String databasePath, String databaseUsername, String databasePassword) {
         this.databasePath = databasePath;
         this.databaseUsername = databaseUsername;
         this.databasePassword = databasePassword;
+    }
+
+    @Override
+    public List<Product> findOrderProducts(int orderNumber) {
+        try (Connection connection = DriverManager.getConnection(databasePath, databaseUsername, databasePassword)) {
+            PreparedStatement orderStatement =
+                    connection.prepareStatement("select * from `order` where order_number=?");
+            orderStatement.setInt(1, orderNumber);
+
+            ResultSet orderSet = orderStatement.executeQuery();
+            List<Product> products = new ArrayList<>();
+
+            ProductDao productDao = new ProductDaoImplementation(databasePath, databaseUsername, databasePassword);
+
+            while (orderSet.next()) {
+                products.add(productDao.findProductById(orderSet.getInt("product_id")));
+            }
+
+            return products;
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public List<Order> findUserOrders(String userName) throws NoSuchUserException {
+        try (Connection connection = DriverManager.getConnection(databasePath, databaseUsername, databasePassword)) {
+            int userId = new UserDaoImplementation(databasePath, databaseUsername,
+                    databasePassword).findUserId(userName);
+
+            PreparedStatement orderStatement =
+                    connection.prepareStatement("select * from `order` where user_id=?");
+            orderStatement.setInt(1, userId);
+
+            ResultSet orderSet = orderStatement.executeQuery();
+            List<Order> orders = new ArrayList<>();
+
+            List<Integer> savedOrdersNumbers = new ArrayList<>();
+            while (orderSet.next()) {
+                int currentOrderNumber = orderSet.getInt("order_number");
+                if (!savedOrdersNumbers.contains(currentOrderNumber)) {
+                    orders.add(new Order(orderSet.getInt("order_number"), null,
+                            findOrderProducts(orderSet.getInt("order_number"))));
+
+                    savedOrdersNumbers.add(currentOrderNumber);
+                }
+            }
+
+            return orders;
+        } catch (SQLException e) {
+            return null;
+        }
     }
 
     @Override
@@ -69,6 +121,8 @@ public class OrderDaoImplementation implements OrderDao {
                 statement.setInt(3, product.getId());
                 statement.execute();
             }
+
+            user.setOrders(findUserOrders(userName));
 
             return new Order(currentOrderNumber, user, correctProducts);
         } catch (SQLException e) {

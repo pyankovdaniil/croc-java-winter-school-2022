@@ -7,14 +7,31 @@ import ru.croc.task18.shopelements.Product;
 import java.sql.*;
 
 public class ProductDaoImplementation implements ProductDao {
-    private String databasePath;
-    private String databaseUsername;
-    private String databasePassword;
+    private final String databasePath;
+    private final String databaseUsername;
+    private final String databasePassword;
 
     public ProductDaoImplementation(String databasePath, String databaseUsername, String databasePassword) {
         this.databasePath = databasePath;
         this.databaseUsername = databaseUsername;
         this.databasePassword = databasePassword;
+    }
+
+    @Override
+    public Product findProductById(int productId) {
+        try (Connection connection = DriverManager.getConnection(databasePath, databaseUsername, databasePassword)) {
+            PreparedStatement productStatement =
+                    connection.prepareStatement("select * from `product` where id=?");
+            productStatement.setInt(1, productId);
+
+            ResultSet productSet = productStatement.executeQuery();
+            if (productSet.next()) {
+                return new Product(productSet.getInt("id"), productSet.getString("vendor_code"),
+                        productSet.getString("name"), productSet.getInt("price"));
+            } else return null;
+        } catch (SQLException e) {
+            return null;
+        }
     }
 
     @Override
@@ -59,7 +76,7 @@ public class ProductDaoImplementation implements ProductDao {
     public Product updateProduct(Product product) throws NoSuchProductException {
         try (Connection connection = DriverManager.getConnection(databasePath, databaseUsername, databasePassword)) {
             if (findProduct(product.getVendorCode()) == null) {
-                throw new NoSuchProductException("Can not find a procuct with vendor code " + product.getVendorCode()
+                throw new NoSuchProductException("Can not find a product with vendor code " + product.getVendorCode()
                         + " in database");
             }
 
@@ -93,7 +110,6 @@ public class ProductDaoImplementation implements ProductDao {
             statement = connection.prepareStatement("delete from `product` where id=?");
             statement.setInt(1, product.getId());
             statement.execute();
-
         } catch (SQLException e) {
             e.printStackTrace();
         }

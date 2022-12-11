@@ -36,7 +36,7 @@ public class Task18 {
         databasePrinter.printDatabase(databasePath, databaseUsername, databasePassword);
 
         try {
-            Product productToSave = new Product(0, "T6", "Sony Playstation 4 Pro", 30000);
+            Product productToSave = new Product(0, "T6", "Sony Playstation 4 Pro",  30000);
             Product savedProduct = productDao.createProduct(productToSave);
             System.out.println("\nProduct " + productToSave.getName() + " was saved. Its id = " + savedProduct.getId());
 
@@ -90,8 +90,8 @@ public class Task18 {
         OrderDao orderDao = new OrderDaoImplementation(databasePath, databaseUsername, databasePassword);
 
         List<Product> productList = new ArrayList<>();
-        productList.add(new Product(0, "T7", "Iphone 14 Pro 256Gb", 40000));
-        productList.add(new Product(0, "T8", "MacBook Pro M1 Max", 7000));
+        productList.add(new Product(0, "T7", "Iphone 14 Pro 256Gb", 1200000));
+        productList.add(new Product(0, "T8", "MacBook Pro M1 Max", 300000));
 
         try {
             Order order = orderDao.createOrder("vasya", productList);
