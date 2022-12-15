@@ -11,7 +11,7 @@ import java.util.Set;
 
 public class DriverFinder {
     public Driver findClosestDriver(Position customerPosition, String comfortClass,
-                                           Set<String> specialWishList) throws NoMatchingDriversException {
+                                    Set<String> specialWishList) throws NoMatchingDriversException {
         List<Driver> drivers = DriverDatabase.getDriverDatabase();
 
         if (drivers.isEmpty()) {
