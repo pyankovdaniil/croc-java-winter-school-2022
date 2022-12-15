@@ -13,7 +13,7 @@ public class Position {
         this(position.latitude, position.longitude);
     }
 
-    public double getDistance(Position position) {
+    public double calculateDistance(Position position) {
         double longitudeDiff = longitude - position.longitude;
         double val1 = Math.pow(Math.sin((latitude - position.latitude) / 2.0), 2);
         double val2 = Math.cos(latitude) * Math.cos(position.latitude) *

@@ -1,4 +1,4 @@
-package ru.croc.task16.driversutil;
+package ru.croc.task16.taxielements;
 
 import ru.croc.task16.positioning.Position;
 
@@ -49,6 +49,6 @@ public class Driver {
 
     @Override
     public String toString() {
-        return fullName + ", " + phoneNumber + ", " + car;
+        return "U-" + fullName + "-" + phoneNumber;
     }
 }
