@@ -1,6 +1,5 @@
 package ru.croc.task19.dao;
 
-import ru.croc.task18.dao.UserDaoImplementation;
 import ru.croc.task18.shopelements.Order;
 import ru.croc.task18.shopelements.User;
 import ru.croc.task19.updatedshopelements.DeliveryOrder;
@@ -22,7 +21,9 @@ public class UpdatedUserDaoImplementation implements UpdatedUserDao {
 
     @Override
     public int findUserId(String userName) {
-        return new UserDaoImplementation(databasePath, databaseUsername, databasePassword).findUserId(userName);
+        return -1;
+        //return new UserDaoImplementation(databasePath, databaseUsername, databasePassword, connection).findUserId
+        // (userName);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package ru.croc.task19.dao;
 
 import ru.croc.task18.dao.OrderDao;
-import ru.croc.task18.dao.OrderDaoImplementation;
+import ru.croc.task18.dao.implementations.OrderDaoImplementation;
 import ru.croc.task19.updatedshopelements.DeliveryOrder;
 
 import java.sql.*;
@@ -28,7 +28,7 @@ public class UpdatedOrderDaoImplementation implements UpdatedOrderDao {
             ResultSet orderSet = orderStatement.executeQuery();
 
             if (orderSet.next()) {
-                OrderDao orderDao = new OrderDaoImplementation(databasePath, databaseUsername, databasePassword);
+                OrderDao orderDao = new OrderDaoImplementation(databasePath, databaseUsername, databasePassword, connection);
                 String deliveryTimeString = orderSet.getString("delivery_date");
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy-HH:mm");
 
