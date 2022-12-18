@@ -1,5 +1,6 @@
-package ru.croc.task18.dao;
+package ru.croc.task18.dao.implementations;
 
+import ru.croc.task18.dao.UserDao;
 import ru.croc.task18.exceptions.NoSuchUserException;
 import ru.croc.task18.shopelements.Order;
 import ru.croc.task18.shopelements.User;
@@ -11,16 +12,19 @@ public class UserDaoImplementation implements UserDao {
     private final String databasePath;
     private final String databaseUsername;
     private final String databasePassword;
+    private final Connection connection;
 
-    public UserDaoImplementation(String databasePath, String databaseUsername, String databasePassword) {
+    public UserDaoImplementation(String databasePath, String databaseUsername, String databasePassword,
+                                 Connection connection) {
         this.databasePath = databasePath;
         this.databaseUsername = databaseUsername;
         this.databasePassword = databasePassword;
+        this.connection = connection;
     }
 
     @Override
     public int findUserId(String userName) {
-        try (Connection connection = DriverManager.getConnection(databasePath, databaseUsername, databasePassword)) {
+        try {
             PreparedStatement productStatement =
                     connection.prepareStatement("select * from `user` where name=?");
             productStatement.setString(1, userName);
@@ -36,7 +40,7 @@ public class UserDaoImplementation implements UserDao {
 
     @Override
     public User findUser(String userName) {
-        try (Connection connection = DriverManager.getConnection(databasePath, databaseUsername, databasePassword)) {
+        try {
             PreparedStatement productStatement =
                     connection.prepareStatement("select * from `user` where name=?");
             productStatement.setString(1, userName);
@@ -44,8 +48,12 @@ public class UserDaoImplementation implements UserDao {
             ResultSet userSet = productStatement.executeQuery();
             if (userSet.next()) {
                 List<Order> userOrders = new OrderDaoImplementation(databasePath,
-                        databaseUsername, databasePassword).findUserOrders(userName);
-                User user = new User(userSet.getInt("id"), userSet.getString("name"), userOrders);
+                        databaseUsername, databasePassword, connection).findUserOrders(userName);
+
+
+                User user = new User(userSet.getInt("id"),
+                        userSet.getString("name"), userOrders);
+
                 for (Order order : userOrders) {
                     order.setUser(user);
                 }
