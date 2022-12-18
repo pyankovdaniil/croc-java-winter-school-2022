@@ -1,19 +1,24 @@
 package ru.croc.task19.database;
 
-import ru.croc.task17.database.ShopDatabaseInserter;
+import ru.croc.task17.database.implementations.ShopDatabaseInserter;
 import ru.croc.task19.dao.CourierDao;
-import ru.croc.task19.dao.CourierDaoImplementation;
+import ru.croc.task19.dao.implementations.CourierDaoImplementation;
 
 import java.sql.*;
 import java.util.List;
 
 public class UpdatedShopDatabaseInserter implements UpdatedDatabaseInserter {
+    private final Connection connection;
+
+    public UpdatedShopDatabaseInserter(Connection connection) {
+        this.connection = connection;
+    }
+
     @Override
     public void insertLines(String databasePath, String databaseUsername, String databasePassword, List<String> orders,
                             List<String> deliveryDates, List<String> couriers, List<String> couriersOrders) {
-        try (Connection connection = DriverManager.getConnection(databasePath, databaseUsername,
-                databasePassword)) {
-            new ShopDatabaseInserter().insertLines(databasePath, databaseUsername, databasePassword, orders);
+        try {
+            new ShopDatabaseInserter(connection).insertLines(databasePath, databaseUsername, databasePassword, orders);
 
             PreparedStatement orderStatement = connection.prepareStatement("alter table `order` add column if " +
                     "not exists delivery_date varchar");
@@ -59,7 +64,8 @@ public class UpdatedShopDatabaseInserter implements UpdatedDatabaseInserter {
             statement.execute("delete from `order_courier`");
 
 
-            CourierDao courierDao = new CourierDaoImplementation(databasePath, databaseUsername, databasePassword);
+            CourierDao courierDao = new CourierDaoImplementation(databasePath, databaseUsername,
+                    databasePassword, connection);
             for (String line : couriersOrders) {
                 String[] strings = line.split(",");
 

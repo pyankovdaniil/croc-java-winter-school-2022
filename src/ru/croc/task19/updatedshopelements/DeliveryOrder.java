@@ -39,7 +39,7 @@ public class DeliveryOrder extends Order {
                 + getOrderNumber() + ": {\n");
         for (Product product : getProducts()) {
             stringBuilder.append("\t").append(product.getVendorCode()).append(", ").append(product.getName())
-                    .append(", ").append(product.getPrice()).append("\n");
+                    .append(", ").append(product.getPrice()).append("rub.\n");
         }
         return stringBuilder.append("}\nDelivery time: ").append(deliveryTime).append(", courier: ")
                 .append(courier.getSurname()).append(" ").append(courier.getName()).toString();

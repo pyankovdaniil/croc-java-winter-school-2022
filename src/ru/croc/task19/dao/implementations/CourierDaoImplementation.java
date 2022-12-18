@@ -1,5 +1,7 @@
-package ru.croc.task19.dao;
+package ru.croc.task19.dao.implementations;
 
+import ru.croc.task19.dao.CourierDao;
+import ru.croc.task19.dao.UpdatedUserDao;
 import ru.croc.task19.updatedshopelements.Courier;
 import ru.croc.task19.updatedshopelements.DeliveryOrder;
 
@@ -11,16 +13,19 @@ public class CourierDaoImplementation implements CourierDao {
     private final String databasePath;
     private final String databaseUsername;
     private final String databasePassword;
+    private final Connection connection;
 
-    public CourierDaoImplementation(String databasePath, String databaseUsername, String databasePassword) {
+    public CourierDaoImplementation(String databasePath, String databaseUsername,
+                                    String databasePassword, Connection connection) {
         this.databasePath = databasePath;
         this.databaseUsername = databaseUsername;
         this.databasePassword = databasePassword;
+        this.connection = connection;
     }
 
     @Override
     public int findCourierIdByEmployeeNumber(String employeeNumber) {
-        try (Connection connection = DriverManager.getConnection(databasePath, databaseUsername, databasePassword)) {
+        try {
             PreparedStatement courierStatement =
                     connection.prepareStatement("select * from `courier` where employee_number=?");
             courierStatement.setString(1, employeeNumber);
@@ -37,7 +42,7 @@ public class CourierDaoImplementation implements CourierDao {
 
     @Override
     public Courier findCourierNameByOrderNumber(int orderNumber) {
-        try (Connection connection = DriverManager.getConnection(databasePath, databaseUsername, databasePassword)) {
+        try {
             PreparedStatement courierStatement =
                     connection.prepareStatement("select * from `order_courier` where order_number=?");
             courierStatement.setInt(1, orderNumber);
@@ -58,13 +63,14 @@ public class CourierDaoImplementation implements CourierDao {
             }
             return null;
         } catch (SQLException e) {
+            e.printStackTrace();
             return null;
         }
     }
 
     @Override
     public Courier findCourier(String employeeNumber) {
-        try (Connection connection = DriverManager.getConnection(databasePath, databaseUsername, databasePassword)) {
+        try {
             PreparedStatement courierStatement =
                     connection.prepareStatement("select * from `courier` where employee_number=?");
             courierStatement.setString(1, employeeNumber);
@@ -85,11 +91,11 @@ public class CourierDaoImplementation implements CourierDao {
             List<DeliveryOrder> couriersOrders = new ArrayList<>();
             while (courierSet.next()) {
                 couriersOrders.add(new UpdatedOrderDaoImplementation(databasePath, databaseUsername,
-                        databasePassword).findOrderByOrderNumber(courierSet.getInt("order_number")));
+                        databasePassword, connection).findOrderByOrderNumber(courierSet.getInt("order_number")));
             }
 
             UpdatedUserDao userDao = new UpdatedUserDaoImplementation(databasePath, databaseUsername,
-                    databasePassword);
+                    databasePassword, connection);
 
             courier.setOrders(couriersOrders);
             for (DeliveryOrder order : couriersOrders) {

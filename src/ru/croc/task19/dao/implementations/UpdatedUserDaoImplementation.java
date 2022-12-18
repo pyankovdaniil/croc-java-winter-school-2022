@@ -1,7 +1,11 @@
-package ru.croc.task19.dao;
+package ru.croc.task19.dao.implementations;
 
+import ru.croc.task18.dao.implementations.UserDaoImplementation;
 import ru.croc.task18.shopelements.Order;
 import ru.croc.task18.shopelements.User;
+import ru.croc.task19.dao.CourierDao;
+import ru.croc.task19.dao.UpdatedOrderDao;
+import ru.croc.task19.dao.UpdatedUserDao;
 import ru.croc.task19.updatedshopelements.DeliveryOrder;
 
 import java.sql.*;
@@ -12,23 +16,25 @@ public class UpdatedUserDaoImplementation implements UpdatedUserDao {
     private final String databasePath;
     private final String databaseUsername;
     private final String databasePassword;
+    private final Connection connection;
 
-    public UpdatedUserDaoImplementation(String databasePath, String databaseUsername, String databasePassword) {
+    public UpdatedUserDaoImplementation(String databasePath, String databaseUsername,
+                                        String databasePassword, Connection connection) {
         this.databasePath = databasePath;
         this.databaseUsername = databaseUsername;
         this.databasePassword = databasePassword;
+        this.connection = connection;
     }
 
     @Override
     public int findUserId(String userName) {
-        return -1;
-        //return new UserDaoImplementation(databasePath, databaseUsername, databasePassword, connection).findUserId
-        // (userName);
+        return new UserDaoImplementation(databasePath, databaseUsername, databasePassword, connection)
+                .findUserId(userName);
     }
 
     @Override
     public User findUser(String userName) {
-        try (Connection connection = DriverManager.getConnection(databasePath, databaseUsername, databasePassword)) {
+        try {
             int userId = findUserId(userName);
 
             if (userId == -1) {
@@ -50,22 +56,20 @@ public class UpdatedUserDaoImplementation implements UpdatedUserDao {
 
             ResultSet ordersSet = statement.executeQuery();
 
-            List<Integer> foundedOrders = new ArrayList<>();
             List<Order> orders = new ArrayList<>();
 
             UpdatedOrderDao orderDao = new UpdatedOrderDaoImplementation(databasePath,
-                    databaseUsername, databasePassword);
+                    databaseUsername, databasePassword, connection);
 
             while (ordersSet.next()) {
                 int currentOrderNumber = ordersSet.getInt("order_number");
-                if (!foundedOrders.contains(currentOrderNumber)) {
-                    orders.add(orderDao.findOrderByOrderNumber(currentOrderNumber));
-                    foundedOrders.add(currentOrderNumber);
-                }
+                orders.add(orderDao.findOrderByOrderNumber(currentOrderNumber));
             }
 
             user.setOrders(orders);
-            CourierDao courierDao = new CourierDaoImplementation(databasePath, databaseUsername, databasePassword);
+
+            CourierDao courierDao = new CourierDaoImplementation(databasePath, databaseUsername,
+                    databasePassword, connection);
 
             for (Order order : orders) {
                 order.setUser(user);
@@ -82,9 +86,10 @@ public class UpdatedUserDaoImplementation implements UpdatedUserDao {
 
     @Override
     public User getUserNameByOrderNumber(int orderNumber) {
-        try (Connection connection = DriverManager.getConnection(databasePath, databaseUsername, databasePassword)) {
+        try {
             PreparedStatement statement = connection.prepareStatement("select * from `order` where order_number=?");
             statement.setInt(1, orderNumber);
+
             ResultSet resultSet = statement.executeQuery();
             int userId = 0;
             if (resultSet.next()) {

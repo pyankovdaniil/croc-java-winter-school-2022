@@ -5,10 +5,15 @@ import ru.croc.task17.database.DatabasePrinter;
 import java.sql.*;
 
 public class UpdatedShopDatabasePrinter implements DatabasePrinter {
+    private final Connection connection;
+
+    public UpdatedShopDatabasePrinter(Connection connection) {
+        this.connection = connection;
+    }
+
     @Override
     public void printDatabase(String databasePath, String databaseUsername, String databasePassword) {
-        try (Connection connection = DriverManager.getConnection(databasePath, databaseUsername,
-                databasePassword)) {
+        try {
             final Statement statement = connection.createStatement();
 
             System.out.println("--- User table ---");
@@ -28,12 +33,20 @@ public class UpdatedShopDatabasePrinter implements DatabasePrinter {
             }
 
             System.out.println("\n--- Order table ---");
-            ResultSet orderData = statement.executeQuery("select * from `order` order by order_number");
+            ResultSet orderData = statement.executeQuery("select * from `order`");
             while (orderData.next()) {
-                System.out.println("Order #" + orderData.getInt("order_number") + ": user with {id="
-                        + orderData.getInt("user_id") + "} ordered product with {id="
-                        + orderData.getInt("product_id") + "}. Delivery date = "
-                        + orderData.getString("delivery_date"));
+                System.out.println("{id=" + orderData.getInt("id") + "}: order #"
+                        + orderData.getInt("order_number") + " was ordered by user" +
+                        " with id={" + orderData.getInt("user_id") + "} and will be " +
+                        "delivered at " + orderData.getString("delivery_date"));
+            }
+
+            System.out.println("\n--- Order_Product table ---");
+            ResultSet orderProductData = statement.executeQuery("select * from `order_product` order by order_id");
+            while (orderProductData.next()) {
+                System.out.println("{id=" + orderProductData.getInt("id") + "}: order with id={"
+                        + orderProductData.getInt("order_id") + "} has product" +
+                        " with id={" + orderProductData.getInt("product_id") + "}");
             }
 
             System.out.println("\n--- Courier table ---");
